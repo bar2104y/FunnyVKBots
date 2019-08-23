@@ -15,7 +15,7 @@ def main():
     vk = vk_session.get_api()
 
     global IsMyUpdate # Объявления костыля как глобального
-    chat_id = "" # id отслеживаемого чата
+    chat_id =  # id отслеживаемого чата(Обязательно число)
 
     # Подключение дополнительных библиотек
     longpoll = VkLongPoll(vk_session)
@@ -27,19 +27,24 @@ def main():
             # print(event.__dict__)
             # print(event.update_type)
             # print(event.update_type.__dict__)
-            
-            # Если не мы меняли аватар
-            if not IsMyUpdate:
-                try:
-                    # Загружаем новую
-                    r = upload.photo_chat(photo='gerb.png', chat_id=chat_id)
-                    #print(r)
-                    # Отмечаем, что это мы, теперь это смена автара не обработается из за условия вше
-                    IsMyUpdate = True           
-                except Exception as e:
-                    print(e) # выводим ошибки, если таковые имеются
-            else:
-                IsMyUpdate = False # Сбрасываем костыль
+            # print(event.chat_id)
+            # print(event.chat_id == chat_id)
+
+            # Проверяем нужный ли чат
+            if event.chat_id == chat_id:
+                # Если не мы меняли аватар
+                if not IsMyUpdate:
+                    try:
+                        # Загружаем новую
+                        r = upload.photo_chat(photo='gerb.png', chat_id=chat_id)
+                        print(r)
+                        print("Капитализм не пройдет!")
+                        # Отмечаем, что это мы, теперь это смена автара не обработается из за условия вше
+                        IsMyUpdate = True           
+                    except Exception as e:
+                        print(e) # выводим ошибки, если таковые имеются
+                else:
+                    IsMyUpdate = False # Сбрасываем костыль
         # else:
         #     print(event.type)
 
